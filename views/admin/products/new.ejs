@@ -15,14 +15,47 @@
       <div class="sub-heading"><h2>Products</h2></div>
       <div class="new-container">
         <h2>New Product</h2>
-        <form action="#">
+        <form action="#" method="post">
           <div>
-            <label for="fname">Name</label><br />
+            <label for="name">Name</label><br />
             <input
               type="text"
-              id="fname"
-              name="fname"
+              id="name"
+              name="name"
               placeholder="Enter name..."
+              required
+              maxlength="25"
+            />
+          </div>
+          <div>
+            <label for="brand">Brand</label><br />
+            <input
+              type="text"
+              id="brand"
+              name="brand"
+              placeholder="Enter brand..."
+              required
+              maxlength="25"
+            />
+          </div>
+          <div>
+            <label for="slug">Slug</label><br />
+            <input
+              type="text"
+              id="slug"
+              name="slug"
+              placeholder="Enter brand..."
+              required
+              maxlength="25"
+            />
+          </div>
+          <div>
+            <label for="color">Name</label><br />
+            <input
+              type="text"
+              id="color"
+              name="color"
+              placeholder="Enter color..."
               required
               maxlength="25"
             />
@@ -40,7 +73,7 @@
 
           <div>
             <label for="photo">Photo</label><br />
-            <input type="file" name="photo" id="photo" multiple required />
+            <input type="file" name="image" id="photo" required />
           </div>
           <div>
             <label for="SKU">SKU</label><br />
@@ -48,7 +81,7 @@
               type="text"
               id="SKU"
               name="SKU"
-              pattern="[A-Z]{3}-[0-9]{3}"
+              pattern="[A-Z]{3}[0-9]{3}"
               placeholder="Enter the SKU..."
               required
             />
@@ -57,11 +90,11 @@
             <label for="price">Price</label><br />
             <input type="number" name="price" id="price" step="0.01" required />
           </div>
-          <div>
+          <!-- <div>
             <label for="date">Publication date</label><br />
             <input type="date" name="date" id="date" required />
-          </div>
-          <div class="form-control">
+          </div> -->
+          <!-- <div class="form-control">
             <label for="category">Categories</label><br />
             <input
               type="checkbox"
@@ -95,7 +128,7 @@
               required
             />
             <label for="Shoes">Shoes</label>
-          </div>
+          </div> -->
 
           <input type="submit" value="Add" />
         </form>

@@ -30,11 +30,9 @@ function createProductRow(product, index) {
   // Create and populate <td> elements for each product property
 
   //adding numbers rows
-
-  // for (let i = 1; i <= 20; i++) {
   const rowsNumber = document.createElement("td");
   rowsNumber.textContent = index + 1;
-  // }
+
   tr.appendChild(rowsNumber);
 
   const tdName = document.createElement("td");
@@ -64,9 +62,7 @@ function createProductRow(product, index) {
     //   deleteProduct(product.id, tr);
     // }
     if (true) {
-      console.log("1");
       deleteProduct(product.id, tr);
-      console.log("2");
     }
   });
 
@@ -88,4 +84,11 @@ loadProductBtn.addEventListener("click", () => {
     .catch((error) => {
       console.log("Error fetching products:", error);
     });
+});
+
+const searchBar = document.querySelector("#search");
+searchBar.addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    console.log("hello");
+  }
 });

@@ -166,4 +166,90 @@ router.delete("/api/products/:id", (req, res) => {
   });
 });
 
+//Post data to backend
+router.post("/admin/products/new", (req, res) => {
+  // Extract product data from the form using req.body
+  const product = {
+    productName: req.body.name,
+    productBrand: req.body.brand,
+    slug: req.body.slug,
+    productPrice: req.body.price,
+    productColor: req.body.color,
+    productImage: req.body.image,
+    SKU: req.body.SKU,
+    productDescription: req.body.description,
+  };
+
+  // SQL query with placeholders for safe data insertion
+  const insertProduct = `
+    INSERT INTO products (
+      product_name,
+      product_brand,
+      slug,
+      product_price,
+      product_color,
+      product_image,
+      product_sku,
+      product_description
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  // Execute the SQL query with the product data
+  db.run(
+    insertProduct,
+    [
+      product.productName,
+      product.productBrand,
+      product.slug,
+      product.productPrice,
+      product.productColor,
+      `images/${product.productImage}`,
+      product.SKU,
+      product.productDescription,
+    ],
+    (err) => {
+      if (err) {
+        console.error("Error inserting product into database:", err.message);
+        return res.status(500).send("Error adding product to the database.");
+      }
+
+      // On success, redirect to the products page
+      res.redirect("/admin/products");
+    }
+  );
+});
+
+// Route to handle product search
+router.get("/api/products/search", (req, res) => {
+  // Assume searchQuery is coming from a query parameter, like ?query=searchTerm
+  const searchQuery = req.query.query;
+
+  // SQL query to search for products by name or any other column you prefer
+  const searchProduct = `
+    SELECT id,
+      product_name as productName,
+      product_brand as productBrand,
+      slug as slug,
+      product_price as productPrice,
+      product_color as productColor,
+      product_image as productImage,
+      product_sku as SKU,
+      product_description as productDescription,
+      created_at AS createdAt
+    FROM products
+    WHERE product_name LIKE ?
+  `;
+
+  // Use wildcard % to match partial strings
+  db.all(searchProduct, [`%${searchQuery}%`], (err, rows) => {
+    if (err) {
+      console.error("Error searching product from database:", err.message);
+      return res.status(500).send("Error searching product from the database.");
+    }
+
+    // Send the found rows as a JSON response
+    res.json(rows);
+  });
+});
+
 module.exports = router;
