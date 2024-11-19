@@ -1,3 +1,4 @@
+console.log("hello");
 const loadProductBtn = document.querySelector("button");
 const tableBody = document.querySelector("tbody");
 
@@ -32,7 +33,6 @@ function createProductRow(product, index) {
   //adding numbers rows
   const rowsNumber = document.createElement("td");
   rowsNumber.textContent = index + 1;
-
   tr.appendChild(rowsNumber);
 
   const tdName = document.createElement("td");
@@ -50,7 +50,6 @@ function createProductRow(product, index) {
   // Optional actions (e.g., edit/delete icons)
   const tdActions = document.createElement("td");
   tdActions.innerHTML = `
-    <a href="#"><i class="bi bi-pencil-square"></i></a>
    <a href="#" class="delete-icon"><i class="bi bi-trash3-fill"></i></a>
   `;
   tr.appendChild(tdActions);
@@ -86,9 +85,10 @@ loadProductBtn.addEventListener("click", () => {
     });
 });
 
-const searchBar = document.querySelector("#search");
-searchBar.addEventListener("keypress", function (e) {
-  if (e.key === "Enter") {
-    console.log("hello");
-  }
+const noProductsModal = document.getElementById("noProductsModal");
+document.addEventListener("DOMContentLoaded", function () {
+  var noProductsModal = new bootstrap.Modal(
+    document.getElementById("noProductsModal")
+  );
+  noProductsModal.show();
 });

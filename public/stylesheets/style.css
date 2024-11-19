@@ -4,12 +4,13 @@
 
 * {
   margin: 0;
-  color: #134b70;
+  /* color: #134b70; */
   box-sizing: border-box;
   font-family: "Times New Roman", Times, serif;
 }
 body {
-  background: white;
+  /* background: white; */
+
   overflow-x: hidden;
 }
 header {
@@ -43,11 +44,14 @@ main {
   align-items: center;
   width: 100%;
 }
+.search-icon form {
+  flex: 0.7;
+}
 .search-bar {
   border: 1px solid black;
   border-radius: 16px;
   padding: 4px;
-  flex: 0.7;
+  /* flex: 0.7; */
   display: flex;
   gap: 5px;
   align-items: center;
@@ -66,9 +70,12 @@ input:focus-visible {
   font-size: 1.5em;
 }
 #hero-section {
+  background: linear-gradient(#6370cd, #229eab);
   text-align: center;
   padding: 20px;
   border: 1px solid #134b70;
+  color: wheat;
+  font-weight: bold;
 }
 .card-container {
   position: relative;

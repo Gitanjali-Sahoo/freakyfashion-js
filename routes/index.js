@@ -124,6 +124,7 @@ router.get("/admin/products/new", function (request, response) {
   response.render("admin/products/new", { title: "Administration" });
 });
 
+// get all products list in products table
 router.get("/api/products", function (request, response) {
   const products = `
     SELECT id,
@@ -149,7 +150,7 @@ router.get("/api/products", function (request, response) {
 
 //Deleting a product from products table
 router.delete("/api/products/:id", (req, res) => {
-  const productId = req.params.id;
+  const productId = req.params.id || "";
   const deletedProducts = `DELETE FROM products WHERE id = ?`;
   db.run(deletedProducts, [productId], (err) => {
     if (err) {
@@ -200,10 +201,10 @@ router.post("/admin/products/new", (req, res) => {
     [
       product.productName,
       product.productBrand,
-      product.slug,
+      product.productName.split(" ").join("-").toLowerCase(),
       product.productPrice,
       product.productColor,
-      `images/${product.productImage}`,
+      product.productImage,
       product.SKU,
       product.productDescription,
     ],
@@ -220,9 +221,10 @@ router.post("/admin/products/new", (req, res) => {
 });
 
 // Route to handle product search
-router.get("/api/products/search", (req, res) => {
+router.get("/search", (req, res) => {
   // Assume searchQuery is coming from a query parameter, like ?query=searchTerm
-  const searchQuery = req.query.query;
+  const searchQuery = req.query.search;
+  const searchParams = `%${searchQuery}%`;
 
   // SQL query to search for products by name or any other column you prefer
   const searchProduct = `
@@ -237,19 +239,28 @@ router.get("/api/products/search", (req, res) => {
       product_description as productDescription,
       created_at AS createdAt
     FROM products
-    WHERE product_name LIKE ?
+    WHERE LOWER(TRIM(product_name)) LIKE LOWER(TRIM(?)) OR
+      LOWER(TRIM(product_brand)) LIKE LOWER(TRIM(?)) OR
+      LOWER(TRIM(product_color)) LIKE LOWER(TRIM(?))
   `;
 
   // Use wildcard % to match partial strings
-  db.all(searchProduct, [`%${searchQuery}%`], (err, rows) => {
-    if (err) {
-      console.error("Error searching product from database:", err.message);
-      return res.status(500).send("Error searching product from the database.");
+  db.all(
+    searchProduct,
+    [searchParams, searchParams, searchParams],
+    (err, rows) => {
+      if (err) {
+        console.error("Error searching product from database:", err.message);
+        return res
+          .status(500)
+          .send("Error searching product from the database.");
+      }
+      console.log("Database Rows Retrieved:", rows);
+      console.log("Search Query:", searchQuery);
+      // Send the found rows as a JSON response
+      res.render("search", { products: rows, title: "Searcrh Products" });
     }
-
-    // Send the found rows as a JSON response
-    res.json(rows);
-  });
+  );
 });
 
 module.exports = router;
